@@ -4,5 +4,6 @@
     <string name="app_name">Coordinates</string>
     <string name="hello_world">Hello world!</string>
     <string name="get_coordinates">Get Coordinates</string>
+    <string name="stop">Stop</string>
 
 </resources>

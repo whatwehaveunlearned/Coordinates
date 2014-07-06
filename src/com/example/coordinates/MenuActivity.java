@@ -1,22 +1,36 @@
 package com.example.coordinates;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 public class MenuActivity extends Activity {
 	
+	//We load the class we have created to manage the GPS
 	// GPSTracker class
     GPSTracker gps;
+    
+    //Handler to and interval to get coordinates
+  	final Handler h = new Handler();
+  	final int delay = 10000; //milliseconds
+  	
+  	
+  //Create array to hold coordinate values
+	ArrayList<Double> coordinates = new ArrayList<Double>();
+	int index = 0; //initialize counter for array
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +40,14 @@ public class MenuActivity extends Activity {
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
+		
+			//Handler to get actual Coordinates every x milliseconds
+			h.postDelayed(new Runnable(){
+			    public void run(){
+			        launchPosition();
+			        h.postDelayed(this, delay);
+			    }
+			}, delay);
 		}
 	}
 
@@ -43,10 +65,17 @@ public class MenuActivity extends Activity {
 		case R.id.menu_item_get:
 			launchPosition();
 			return true;
+		
+		case R.id.menu_stop:
+			h.removeCallbacksAndMessages(null);
+			gps.stopUsingGPS();
+			return true;
+		
 	}
 		return super.onOptionsItemSelected(item);
 	}
 	
+	//Method used to grab the GPS position and show it in screen
 	public void launchPosition(){
         // create class object
         gps = new GPSTracker(MenuActivity.this);
@@ -58,7 +87,10 @@ public class MenuActivity extends Activity {
             double longitude = gps.getLongitude();
              
             // \n is for new line
-            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();    
+            coordinates.add(latitude);
+            coordinates.add(longitude);
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + coordinates.get(index+1) + "\nLong: " + coordinates.get(index+1), Toast.LENGTH_LONG).show();
+            index = index +1;
         }else{
             // can't get location
             // GPS or Network is not enabled
@@ -94,5 +126,5 @@ public class MenuActivity extends Activity {
 			}
 			return super.onKeyDown(keyCode, event);
 		}
-
+	
 }

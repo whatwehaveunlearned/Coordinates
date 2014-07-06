@@ -27,6 +27,7 @@ public final class R {
     public static final class id {
         public static final int container=0x7f090000;
         public static final int menu_item_get=0x7f090002;
+        public static final int menu_stop=0x7f090003;
         public static final int textView1=0x7f090001;
     }
     public static final class layout {
@@ -40,6 +41,7 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int get_coordinates=0x7f060002;
         public static final int hello_world=0x7f060001;
+        public static final int stop=0x7f060003;
     }
     public static final class style {
         /** 
