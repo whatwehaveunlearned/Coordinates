@@ -1,24 +1,24 @@
 package com.example.coordinates;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MenuActivity extends Activity {
 	
+	//This is needed to assign a variable from layout
+		TextView textView;
 	//We load the class we have created to manage the GPS
 	// GPSTracker class
     GPSTracker gps;
@@ -43,11 +43,13 @@ public class MenuActivity extends Activity {
 		
 			//Handler to get actual Coordinates every x milliseconds
 			h.postDelayed(new Runnable(){
-			    public void run(){
+			    @Override
+				public void run(){
 			        launchPosition();
 			        h.postDelayed(this, delay);
 			    }
 			}, delay);
+			
 		}
 	}
 
@@ -61,16 +63,29 @@ public class MenuActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		TextView t=(TextView)findViewById(R.id.textView1);
 		switch(item.getItemId()) {
 		case R.id.menu_item_get:
 			launchPosition();
 			return true;
-		
+			
 		case R.id.menu_stop:
 			h.removeCallbacksAndMessages(null);
 			gps.stopUsingGPS();
 			return true;
-		
+			
+		case R.id.menu_get_all:
+			//t.setText(Html.fromHtml("<p> <font size='1' color='#0066FF' style='font-style:italic'>"+coordinates+"</p>"));
+			t.setText(""+ coordinates);
+			//
+			return true;
+		case R.id.menu_erase:
+			Toast.makeText(getApplicationContext(), "Erase", Toast.LENGTH_LONG).show();
+			t.setText("Hi");
+			coordinates.clear();
+			index = 0;
+			return true;
+			
 	}
 		return super.onOptionsItemSelected(item);
 	}
@@ -89,7 +104,7 @@ public class MenuActivity extends Activity {
             // \n is for new line
             coordinates.add(latitude);
             coordinates.add(longitude);
-            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + coordinates.get(index+1) + "\nLong: " + coordinates.get(index+1), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + coordinates.get(index) + "\nLong: " + coordinates.get(index+1), Toast.LENGTH_LONG).show();
             index = index +1;
         }else{
             // can't get location
