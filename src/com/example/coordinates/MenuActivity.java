@@ -1,9 +1,12 @@
 package com.example.coordinates;
 
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -18,7 +21,7 @@ import android.widget.Toast;
 public class MenuActivity extends Activity {
 	
 	//This is needed to assign a variable from layout
-		TextView textView;
+	TextView textView;
 	//We load the class we have created to manage the GPS
 	// GPSTracker class
     GPSTracker gps;
@@ -26,6 +29,11 @@ public class MenuActivity extends Activity {
     //Handler to and interval to get coordinates
   	final Handler h = new Handler();
   	final int delay = 10000; //milliseconds
+  	
+  	//Saving in a file
+  	String FILENAME = "coordinates_file";
+  	FileOutputStream FileOutputStream;
+  	DataOutputStream DataOutputStream;
   	
   	
   //Create array to hold coordinate values
@@ -75,7 +83,6 @@ public class MenuActivity extends Activity {
 			return true;
 			
 		case R.id.menu_get_all:
-			//t.setText(Html.fromHtml("<p> <font size='1' color='#0066FF' style='font-style:italic'>"+coordinates+"</p>"));
 			t.setText(""+ coordinates);
 			//
 			return true;
@@ -85,8 +92,47 @@ public class MenuActivity extends Activity {
 			coordinates.clear();
 			index = 0;
 			return true;
+		case R.id.menu_save:
+			try {
+				FileOutputStream fos = new FileOutputStream(FILENAME);
+			     
+			      /*
+			       * To create DataOutputStream object from FileOutputStream use,
+			       * DataOutputStream(OutputStream os) constructor.
+			       *
+			       */
+			     
+			       DataOutputStream dos = new DataOutputStream(fos);
+			     
+			       //double d = 165;
+			     
+			       /*
+			        * To write a double value to a file, use
+			        * void writeDouble(double d) method of Java DataOutputStream class.
+			        *
+			        * This method writes specified double to output stream as 8 bytes value.
+			        * Please note that the double value is first converted to long using
+			        * Double.doubleToLongBits method and then long is written to
+			        * underlying output stream.
+			        */
+			       
+			        dos.writeDouble(coordinates.get(0));
+			        dos.writeDouble(coordinates.get(1));
+			       
+			        /*
+			         * To close DataOutputStream use,
+			         * void close() method.
+			         *
+			         */
+			       
+			         dos.close();
+				} catch (Exception e) {
+				  e.printStackTrace();
+				}
+		case R.id.menu_read:
 			
 	}
+			
 		return super.onOptionsItemSelected(item);
 	}
 	

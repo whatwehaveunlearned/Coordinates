@@ -29,6 +29,8 @@ public final class R {
         public static final int menu_erase=0x7f090005;
         public static final int menu_get_all=0x7f090004;
         public static final int menu_item_get=0x7f090002;
+        public static final int menu_read=0x7f090007;
+        public static final int menu_save=0x7f090006;
         public static final int menu_stop=0x7f090003;
         public static final int textView1=0x7f090001;
     }
@@ -45,6 +47,8 @@ public final class R {
         public static final int erase=0x7f060004;
         public static final int get_coordinates=0x7f060002;
         public static final int hello_world=0x7f060001;
+        public static final int read=0x7f060007;
+        public static final int save=0x7f060006;
         public static final int stop=0x7f060005;
     }
     public static final class style {
